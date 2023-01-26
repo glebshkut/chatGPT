@@ -50,10 +50,8 @@ const App: React.FC<Props> = () => {
             cols={40}
           />
           <button onClick={generateImage}>Generate an Image</button>
-          {result.length > 0 ? (
+          {result.length > 0 && (
             <img className="result-image" src={result} alt="result" />
-          ) : (
-            <></>
           )}
         </>
       )}
