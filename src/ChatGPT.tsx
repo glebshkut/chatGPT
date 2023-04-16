@@ -1,36 +1,29 @@
-import { useState } from 'react'
-import './App.css';
-import { Configuration, OpenAIApi } from "openai";
+import { useSelector, useDispatch } from 'react-redux';
+import { setAPI } from './store';
 
-// const openai = new OpenAIApi(configuration);
-// const response = await openai.createCompletion({
-//   model: "text-davinci-003",
-//   prompt: "Say this is a test",
-//   temperature: 0,
-//   max_tokens: 7,
-// });
+interface storeState {
+  value: number;
+  apiProvided: boolean;
+  API: string;
+  screen: string;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-  // const configuration = new Configuration({
-  //   apiKey: import.meta.env.VITE_Open_AI_Key,
-  // });
-  // const openai = new OpenAIApi(configuration);
-  // const response = await openai.createCompletion({
-  //   model: "text-davinci-003",
-  //   prompt: "Who is Elon Musk?",
-  //   temperature: 0,
-  //   max_tokens: 20,
-  // });
-
-  // console.log('response', response.data.choices[0]);
-
+  const apiValue = useSelector((state: storeState) => state.API);
+  const dispatch = useDispatch();
 
   return (
     <div className="App">
-      Here
+      <div>API: {apiValue}</div>
+      <input
+        id="api-input"
+        type="text"
+        onChange={(e) => {
+          dispatch(setAPI(e.target.value));
+        }}
+      />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

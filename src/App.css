@@ -12,6 +12,11 @@ h2 {
   font-family: "Lato", sans-serif;
 }
 
+#api-input {
+  background-color: white;
+  z-index: 50;
+}
+
 .app-main {
   display: flex;
   flex-direction: column;
