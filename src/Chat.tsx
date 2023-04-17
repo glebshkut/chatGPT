@@ -2,6 +2,19 @@ import './Chat.scss';
 import { useSelector, useDispatch } from "react-redux";
 import { actions, storeState } from "./store";
 import { Configuration, OpenAIApi } from "openai";
+import axios from 'axios';
+
+async function fetchChatCompletion(prompt: string, apiKey: string) {
+  try {
+    return await axios.post('http://127.0.0.1:5000/chat-completion', {
+      prompt: prompt,
+      apiKey: apiKey,
+    });
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
 
 export default function Chat() {
   const dispatch = useDispatch();
@@ -10,30 +23,14 @@ export default function Chat() {
   const API = useSelector((state: storeState) => state.API) || import.meta.env.VITE_OPENAI_API_KEY;
   const { setRequest, setResponses, switchScreen } = actions;
 
-  const configuration = new Configuration({
-    apiKey: API,
-  });
-
-  const openai = new OpenAIApi(configuration);
-
-  const getResponse = async () => {
-    return await openai.createCompletion({
-      model: "text-davinci-002",
-      prompt: request,
-      max_tokens: 100,
-      temperature: 0,
-    });
-  };
-
-
   const handleRequest = () => {
     dispatch(setResponses(request));
-    getResponse()
+    fetchChatCompletion(request, API)
       .then((response) => {
-        const data = response.data.choices[0].text;
-        console.log(data);
-        if (data && data.length > 0 && typeof data === "string") {
-          dispatch(setResponses(data));
+        if (response) {
+          dispatch(setResponses(response.data.result));
+        } else {
+          console.log("No response received");
         }
       })
       .catch((error) => {
