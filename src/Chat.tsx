@@ -1,10 +1,12 @@
 import './Chat.scss';
 import { useSelector, useDispatch } from "react-redux";
 import { actions, storeState } from "./store";
-import { Configuration, OpenAIApi } from "openai";
 import axios from 'axios';
 
-async function fetchChatCompletion(prompt: string, apiKey: string) {
+async function fetchChatCompletion(prompt: {
+  role: string;
+  content: string;
+}[], apiKey: string) {
   try {
     return await axios.post('http://127.0.0.1:5000/chat-completion', {
       prompt: prompt,
@@ -24,8 +26,10 @@ export default function Chat() {
   const { setRequest, setResponses, switchScreen } = actions;
 
   const handleRequest = () => {
-    dispatch(setResponses(request));
-    fetchChatCompletion(request, API)
+    const res = [...responses];
+    res.push({ "role": "user", "content": request });
+    dispatch(setResponses({ "role": "user", "content": request }));
+    fetchChatCompletion(res, API)
       .then((response) => {
         if (response) {
           dispatch(setResponses(response.data.result));
@@ -46,7 +50,7 @@ export default function Chat() {
         <div className="chat-box">
           {responses.map((res, index) => {
             return <div key={index}>
-              {res}
+              {res.content}
             </div>
           })}
         </div>

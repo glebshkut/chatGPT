@@ -6,8 +6,8 @@ const counterSlice = createSlice({
   initialState: {
     API: "",
     screen: "initial",
-    responses: [],
     request: "",
+    responses: [],
   } as storeState,
   reducers: {
     setAPI: (state, action: PayloadAction<string>) => {
@@ -19,7 +19,10 @@ const counterSlice = createSlice({
     setRequest: (state, action: PayloadAction<string>) => {
       state.request = action.payload;
     },
-    setResponses: (state, action: PayloadAction<string>) => {
+    setResponses: (state, action: PayloadAction<{
+      role: string;
+      content: string;
+    }>) => {
       const temp = state.responses;
       temp.push(action.payload);
       state.responses = temp;
@@ -30,7 +33,10 @@ const counterSlice = createSlice({
 export interface storeState {
   API: string;
   screen: string;
-  responses: string[];
+  responses: {
+    role: string;
+    content: string;
+  }[];
   request: string;
 }
 
