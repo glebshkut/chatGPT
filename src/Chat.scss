@@ -9,4 +9,13 @@ button.auth-back {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  .chat-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    padding: 2%;
+    gap: 20px;
+  }
 }

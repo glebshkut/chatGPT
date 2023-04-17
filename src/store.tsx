@@ -8,7 +8,7 @@ const counterSlice = createSlice({
     screen: "initial",
     responses: [],
     request: "",
-  },
+  } as storeState,
   reducers: {
     setAPI: (state, action: PayloadAction<string>) => {
       state.API = action.payload;
@@ -18,6 +18,11 @@ const counterSlice = createSlice({
     },
     setRequest: (state, action: PayloadAction<string>) => {
       state.request = action.payload;
+    },
+    setResponses: (state, action: PayloadAction<string>) => {
+      const temp = state.responses;
+      temp.push(action.payload);
+      state.responses = temp;
     }
   }
 })

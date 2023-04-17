@@ -21,6 +21,7 @@ h2 {
 }
 
 #api-input {
+  color: black;
   background-color: white;
   z-index: 50;
 }
