@@ -1,28 +1,30 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setAPI } from './store';
+import { actions, storeState } from './store';
+import Chat from "./Chat";
 
-interface storeState {
-  value: number;
-  apiProvided: boolean;
-  API: string;
-  screen: string;
-}
+
 
 function App() {
-  const apiValue = useSelector((state: storeState) => state.API);
+  const screen = useSelector((state: storeState) => state.screen);
+  const API = useSelector((state: storeState) => state.API);
   const dispatch = useDispatch();
+  const { setAPI, switchScreen } = actions;
 
   return (
-    <div className="App">
-      <div>API: {apiValue}</div>
-      <input
-        id="api-input"
-        type="text"
-        onChange={(e) => {
-          dispatch(setAPI(e.target.value));
-        }}
-      />
-    </div>
+    screen === "initial" ?
+      <div className="App">
+        <div>Enter your API key:</div>
+        <input
+          id="api-input"
+          type="text"
+          value={API}
+          onChange={(e) => {
+            dispatch(setAPI(e.target.value));
+          }}
+        />
+        <button onClick={() => dispatch(switchScreen("chat"))}>Done!</button>
+      </div>
+      : <Chat />
   );
 }
 

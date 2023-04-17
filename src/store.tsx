@@ -4,23 +4,35 @@ import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit';
 const counterSlice = createSlice({
   name: 'chatgpt',
   initialState: {
-    value: 0,
-    apiProvided: false,
     API: "",
-    screen: "initial"
+    screen: "initial",
+    responses: [],
+    request: "",
   },
   reducers: {
     setAPI: (state, action: PayloadAction<string>) => {
       state.API = action.payload;
-      if (action.payload !== "") {
-        state.apiProvided = true;
-      }
+    },
+    switchScreen: (state, action: PayloadAction<string>) => {
+      state.screen = action.payload;
+    },
+    setRequest: (state, action: PayloadAction<string>) => {
+      state.request = action.payload;
     }
   }
 })
 
-export const { setAPI } = counterSlice.actions;
+export interface storeState {
+  API: string;
+  screen: string;
+  responses: string[];
+  request: string;
+}
+
+export const actions = counterSlice.actions;
 
 export const store = configureStore({
   reducer: counterSlice.reducer
 })
+
+store.subscribe(() => { console.log(store.getState()) })
